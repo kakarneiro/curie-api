@@ -79,6 +79,15 @@ export ORACLE_USER=RM567753
 export ORACLE_PASSWORD=sua_senha
 ```
 
+**Alternativa sem variáveis de ambiente:** crie o arquivo `src/main/resources/application-local.properties` (está no `.gitignore`, nunca é versionado) com:
+
+```properties
+spring.datasource.username=RM567753
+spring.datasource.password=sua_senha
+```
+
+O perfil `local` é ativado por padrão e carrega esse arquivo quando ele existe. Um modelo está em `src/main/resources/application-local.properties.example`.
+
 Opcional: `ORACLE_URL` para apontar outro banco (padrão `jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL`).
 
 ### 3. Rodar
@@ -87,7 +96,7 @@ Opcional: `ORACLE_URL` para apontar outro banco (padrão `jdbc:oracle:thin:@orac
 mvn spring-boot:run
 ```
 
-Ou pelo IntelliJ / VS Code, executando `CurieApiApplication` com as variáveis de ambiente configuradas na *Run Configuration*.
+Ou pelo IntelliJ / VS Code, executando `CurieApiApplication` (com as variáveis de ambiente na *Run Configuration* ou com o `application-local.properties` criado).
 
 ### 4. Testar
 

@@ -1,0 +1,3 @@
+﻿# Copie para application-local.properties (ignorado pelo git) e preencha
+spring.datasource.username=RM000000
+spring.datasource.password=sua_senha
