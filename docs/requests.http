@@ -1,0 +1,155 @@
+### CURIE API - requisicoes de exemplo (VS Code REST Client / IntelliJ HTTP Client)
+### Os dados abaixo existem apos rodar src/main/resources/db/CURIE_Challenge_1Sem_2TDS_BD.sql
+
+@base = http://localhost:8080/api
+
+### ---------- ESCOLAS ----------
+
+### Listar escolas (paginado)
+GET {{base}}/escolas?page=0&size=10
+
+### Buscar por texto (Query Method)
+GET {{base}}/escolas?nome=caetano
+
+### Escolas de uma cidade
+GET {{base}}/escolas/cidade/Sao Paulo
+
+### Buscar por id
+GET {{base}}/escolas/1
+
+### Cadastrar
+POST {{base}}/escolas
+Content-Type: application/json
+
+{
+  "nome": "E.E. Marie Curie",
+  "cidade": "Campinas",
+  "uf": "sp",
+  "tipo": "PUBLICA",
+  "codigoInep": "35000099"
+}
+
+### Cadastrar com erro de validacao (400)
+POST {{base}}/escolas
+Content-Type: application/json
+
+{
+  "nome": "",
+  "cidade": "Campinas",
+  "uf": "SPX",
+  "tipo": "PUBLICA"
+}
+
+### Atualizar
+PUT {{base}}/escolas/1
+Content-Type: application/json
+
+{
+  "nome": "E.E. Prof. Caetano de Campos",
+  "cidade": "Sao Paulo",
+  "uf": "SP",
+  "tipo": "PUBLICA",
+  "codigoInep": "35000001"
+}
+
+### Buscar id inexistente (404)
+GET {{base}}/escolas/999
+
+### ---------- USUARIOS ----------
+
+### Listar / buscar por nome
+GET {{base}}/usuarios?nome=ana
+
+### Ranking
+GET {{base}}/usuarios/ranking
+
+### Usuarios da escola 1
+GET {{base}}/usuarios/escola/1
+
+### Cadastrar aluno
+POST {{base}}/usuarios
+Content-Type: application/json
+
+{
+  "idEscola": 1,
+  "nome": "Lucas Pereira",
+  "email": "lucas.pereira@aluno.curie.edu.br",
+  "perfil": "ALUNO"
+}
+
+### E-mail duplicado (422)
+POST {{base}}/usuarios
+Content-Type: application/json
+
+{
+  "idEscola": 1,
+  "nome": "Outra Ana",
+  "email": "ana.souza@aluno.curie.edu.br",
+  "perfil": "ALUNO"
+}
+
+### ---------- KITS ----------
+
+### Listar kits ativos
+GET {{base}}/kits?status=ATIVO
+
+### Buscar pelo serial (usado pelo firmware)
+GET {{base}}/kits/serial/CURIE-2026-0001
+
+### Cadastrar kit
+POST {{base}}/kits
+Content-Type: application/json
+
+{
+  "idEscola": 2,
+  "codSerial": "CURIE-2026-0006",
+  "status": "INATIVO"
+}
+
+### Ativar kit 5 (regra de negocio)
+PATCH {{base}}/kits/5/ativar
+
+### ---------- MEDICOES ----------
+
+### Listar (mais recentes primeiro)
+GET {{base}}/medicoes
+
+### Medicoes da usuaria Ana (id 1)
+GET {{base}}/medicoes/usuario/1
+
+### Medicoes por cidade (mapa colaborativo)
+GET {{base}}/medicoes/cidade/Sao Paulo
+
+### Registrar medicao (credita 10 pontos ao usuario)
+POST {{base}}/medicoes
+Content-Type: application/json
+
+{
+  "idKit": 1,
+  "idUsuario": 1,
+  "idExperimento": 2,
+  "valorCpm": 33.5,
+  "observacao": "Banana madura, sensor a 1 cm"
+}
+
+### Regra de negocio violada: kit 5 (INATIVO) -> 422
+POST {{base}}/medicoes
+Content-Type: application/json
+
+{
+  "idKit": 5,
+  "idUsuario": 6,
+  "idExperimento": 1,
+  "valorCpm": 20
+}
+
+### Regra de negocio violada: aluno de outra escola -> 422
+POST {{base}}/medicoes
+Content-Type: application/json
+
+{
+  "idKit": 1,
+  "idUsuario": 3,
+  "idExperimento": 1,
+  "valorCpm": 20
+}

@@ -1,0 +1,34 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+.mvn/wrapper/maven-wrapper.jar
+
+# IDEs
+.idea/
+*.iml
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+*.swp
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs e builds
+*.log
+*.class
+*.jar
+*.war
+!.mvn/wrapper/maven-wrapper.jar
+
+# Credenciais / ambiente local (NUNCA versionar)
+.env
+*.env
+application-local.properties
+application-dev.properties
